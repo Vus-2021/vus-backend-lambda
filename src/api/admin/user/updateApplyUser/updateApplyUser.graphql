@@ -1,0 +1,9 @@
+type Mutation {
+    updateApplyUser(userId: String!, month: String!, state: String!): updateApplyUserResponse
+}
+
+type updateApplyUserResponse implements Response {
+    success: Boolean!
+    message: String!
+    code: Int!
+}

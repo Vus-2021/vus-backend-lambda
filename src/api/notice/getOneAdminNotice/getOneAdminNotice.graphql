@@ -1,0 +1,10 @@
+type Query {
+    getOneAdminNotice(partitionKey: String): getOneAdminNoticeResponse
+}
+
+type getOneAdminNoticeResponse implements Response {
+    success: Boolean!
+    message: String!
+    code: Int
+    data: adminNotice
+}

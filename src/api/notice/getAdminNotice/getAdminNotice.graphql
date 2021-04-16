@@ -1,0 +1,22 @@
+type Query {
+    getAdminNotice(notice: String, name: String, content: String, limit: Int): getNoticeResponse
+}
+
+type getNoticeResponse implements Response {
+    success: Boolean!
+    message: String!
+    code: Int
+    data: [adminNotice]
+}
+
+type adminNotice implements Notice {
+    partitionKey: String
+    sortKey: String
+    gsiSortKey: String
+    createdAt: String
+    updatedAt: String
+    content: String
+    notice: String
+    author: String
+    userId: String
+}

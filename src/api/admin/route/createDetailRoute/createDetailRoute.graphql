@@ -1,0 +1,16 @@
+type Mutation {
+    createRouteDetail(
+        route: String!
+        location: String!
+        lat: Float!
+        long: Float!
+        boardingTime: String!
+        file: Upload
+    ): createRouteDetailResponse
+}
+
+type createRouteDetailResponse implements Response {
+    success: Boolean!
+    message: String!
+    code: Int
+}

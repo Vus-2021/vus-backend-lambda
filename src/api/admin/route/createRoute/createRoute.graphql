@@ -1,0 +1,21 @@
+input driver {
+    name: String
+    userId: String
+    phone: String
+}
+
+type createRouteResponse implements Response {
+    success: Boolean!
+    message: String!
+    code: Int
+}
+
+type Mutation {
+    createRoute(
+        route: String!
+        busNumber: String!
+        limitCount: Int!
+        driver: driver!
+        file: Upload
+    ): createRouteResponse
+}

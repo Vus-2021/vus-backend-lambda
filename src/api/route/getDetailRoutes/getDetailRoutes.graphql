@@ -1,0 +1,25 @@
+type Query {
+    getDetailRoutes(route: String!, currentLocation: Boolean): RouteDetailResponse
+}
+
+type RouteDetailResponse implements Response {
+    success: Boolean!
+    message: String!
+    code: Int
+    data: [RouteDetail]
+}
+
+type RouteDetail {
+    partitionKey: String
+    sortKey: String
+    gsiSortKey: String
+    boardingTime: String
+    location: String
+    imageUrl: String
+    long: Float
+    lat: Float
+    route: String
+    updatedAt: String
+    currentLocation: Boolean
+    locationIndex: Int
+}

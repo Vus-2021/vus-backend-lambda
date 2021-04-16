@@ -1,0 +1,9 @@
+type Mutation {
+    deleteNotice(partitionKey: [String]!): deleteNoticeResponse
+}
+
+type deleteNoticeResponse implements Response {
+    success: Boolean!
+    message: String!
+    code: Int
+}

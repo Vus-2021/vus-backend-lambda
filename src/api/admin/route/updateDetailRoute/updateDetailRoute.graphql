@@ -1,0 +1,17 @@
+type Mutation {
+    updateDetailRoute(
+        partitionKey: String!
+        boardingTime: String!
+        lat: Float!
+        long: Float!
+        location: String!
+        route: String!
+        file: Upload
+    ): updateAdminNoticeResponse
+}
+
+type updateDetailRouteResponse implements Response {
+    success: Boolean!
+    message: String!
+    code: Int
+}

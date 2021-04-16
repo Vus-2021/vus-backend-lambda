@@ -1,0 +1,33 @@
+type Query {
+    getRoutesInfo(route: String, month: String): RouteInfoResponse
+}
+
+type RouteInfoResponse implements Response {
+    success: Boolean!
+    message: String!
+    code: Int
+    data: [RouteInfo]
+}
+
+type RouteInfo {
+    partitionKey: String
+    sortKey: String
+    gsiSortKey: String
+    route: String
+    busNumber: String
+    limitCount: Int
+    driver: driverInfo
+    month: monthInfo
+    imageUrl: String
+}
+
+type driverInfo {
+    phone: String
+    userId: String
+    name: String
+}
+
+type monthInfo {
+    registerCount: Int
+    month: String
+}

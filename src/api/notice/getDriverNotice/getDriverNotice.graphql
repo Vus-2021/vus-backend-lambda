@@ -1,0 +1,21 @@
+type Query {
+    getDriverNotice(route: String): GetDriverNoticeResponse
+}
+
+type GetDriverNoticeResponse implements Response {
+    success: Boolean!
+    message: String!
+    code: Int
+    data: [driverNotice]
+}
+
+type driverNotice {
+    updatedAt: String
+    route: String
+    location: String
+}
+
+interface Notice {
+    notice: String
+    createdAt: String
+}

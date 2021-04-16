@@ -1,0 +1,30 @@
+type Query {
+    getBusApplicant(
+        route: String
+        month: String
+        state: String
+        name: String
+        userId: String
+        type: UserType
+        isCancellation: Boolean
+    ): getBusApplicantResponse
+}
+
+type getBusApplicantResponse implements Response {
+    success: Boolean!
+    message: String!
+    code: Int
+    data: [ApplicantList]
+}
+
+type ApplicantList {
+    userId: String
+    name: String
+    type: String
+    registerDate: String
+    phoneNumber: String
+    route: String
+    previousMonthState: String
+    state: String
+    isCancellation: Boolean
+}

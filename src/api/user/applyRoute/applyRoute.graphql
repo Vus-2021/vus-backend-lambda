@@ -1,0 +1,14 @@
+type Mutation {
+    applyRoute(
+        route: String!
+        month: String!
+        partitionKey: String!
+        userId: String
+    ): applyRouteResponse
+}
+
+type applyRouteResponse implements Response {
+    success: Boolean!
+    message: String!
+    code: Int
+}

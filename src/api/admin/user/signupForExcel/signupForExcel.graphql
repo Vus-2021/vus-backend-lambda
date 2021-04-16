@@ -1,0 +1,19 @@
+type Mutation {
+    signupForExcel(input: [UserInput]): SignupForExcelResponse
+}
+
+type SignupForExcelResponse implements Response {
+    success: Boolean!
+    message: String!
+    code: Int
+    data: [RejectedUsers]
+}
+
+type RejectedUsers {
+    userId: String
+    password: String
+    name: String
+    phoneNumber: String
+    type: String
+    registerDate: String
+}

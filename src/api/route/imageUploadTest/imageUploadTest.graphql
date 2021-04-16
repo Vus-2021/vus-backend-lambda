@@ -1,0 +1,12 @@
+scalar Upload
+
+type FileResponse {
+    filename: String
+    mimetype: String
+    encoding: String
+    url: String
+}
+
+type Mutation {
+    singleUpload(file: Upload!): FileResponse!
+}

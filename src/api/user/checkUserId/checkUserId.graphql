@@ -1,0 +1,9 @@
+type Query {
+    checkUserId(userId: String): checkUserIdResponse
+}
+
+type checkUserIdResponse implements Response {
+    success: Boolean!
+    message: String!
+    code: Int
+}

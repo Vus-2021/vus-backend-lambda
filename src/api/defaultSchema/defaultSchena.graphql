@@ -1,0 +1,5 @@
+interface Response {
+    success: Boolean
+    message: String
+    code: Int
+}

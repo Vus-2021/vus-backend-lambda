@@ -1,0 +1,9 @@
+type Mutation {
+    resetMonthRoute(month: String!, route: String!, busId: String!): resetMonthRouteResponse
+}
+
+type resetMonthRouteResponse implements Response {
+    success: Boolean!
+    message: String!
+    code: Int
+}

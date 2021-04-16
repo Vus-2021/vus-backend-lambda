@@ -1,0 +1,22 @@
+type applyRoutesInfo {
+    route: String
+    month: String
+    busId: String
+}
+type information {
+    name: String
+    userId: String
+    type: UserType
+    routeInfo: [applyRoutesInfo]
+}
+
+type getMyInformationResponse implements Response {
+    success: Boolean!
+    message: String
+    code: Int
+    data: information
+}
+
+type Query {
+    getMyInformation: getMyInformationResponse
+}

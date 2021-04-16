@@ -1,0 +1,45 @@
+scalar Date
+
+enum UserType {
+    VT
+    VH
+    ES
+    VS
+    VE
+    VM
+    RY
+    WR
+    ADMIN
+    DRIVER
+}
+
+input UserInput {
+    "사번."
+    userId: ID!
+    "비밀번호"
+    password: String!
+    name: String!
+    phoneNumber: String!
+    "직책 등 유저 유형"
+    type: UserType!
+    "입사일자"
+    registerDate: Date
+}
+
+type SignupResponse implements Response {
+    success: Boolean!
+    message: String!
+    code: Int
+}
+
+type Mutation {
+    signupUser(input: UserInput): SignupResponse
+}
+
+type Query {
+    dummy: dummyResponse
+}
+
+type dummyResponse {
+    token: String
+}

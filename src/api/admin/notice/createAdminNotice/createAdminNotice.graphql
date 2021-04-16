@@ -1,0 +1,18 @@
+type Mutation {
+    createAdminNotice(
+        noticeType: NoticeTypes!
+        notice: String!
+        content: String!
+    ): createNoticeResponse
+}
+
+enum NoticeTypes {
+    ADMIN
+    DRIVER
+}
+
+type createNoticeResponse implements Response {
+    success: Boolean!
+    message: String!
+    code: Int
+}

@@ -1,0 +1,9 @@
+type deleteRouteResponse implements Response {
+    success: Boolean!
+    message: String!
+    code: Int
+}
+
+type Mutation {
+    deleteRoute(partitionKey: String): deleteRouteResponse
+}

@@ -1,0 +1,9 @@
+type Mutation {
+    deleteUser(userId: [String]): deleteUserResponse
+}
+
+type deleteUserResponse implements Response {
+    success: Boolean!
+    message: String!
+    code: Int
+}

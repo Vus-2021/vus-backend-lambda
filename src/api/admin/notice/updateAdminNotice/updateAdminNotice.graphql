@@ -1,0 +1,13 @@
+type updateAdminNoticeResponse implements Response {
+    success: Boolean!
+    message: String!
+    code: Int
+}
+
+type Mutation {
+    updateAdminNotice(
+        partitionKey: String!
+        notice: String!
+        content: String!
+    ): updateAdminNoticeResponse
+}

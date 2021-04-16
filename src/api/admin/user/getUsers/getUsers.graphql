@@ -1,0 +1,18 @@
+type Query {
+    getUsers(userId: String, name: String, type: String, isMatched: Boolean): GetUsersResponse
+}
+
+type GetUsersResponse implements Response {
+    success: Boolean!
+    message: String!
+    code: Int
+    data: [User]
+}
+
+type User {
+    userId: String
+    name: String
+    type: String
+    registerDate: Date
+    phoneNumber: String
+}

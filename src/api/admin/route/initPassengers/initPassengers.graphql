@@ -1,0 +1,9 @@
+type Mutation {
+    initPassengers(month: String!, route: String!, busId: String!): initPassengersResponse
+}
+
+type initPassengersResponse implements Response {
+    success: Boolean!
+    message: String!
+    code: Int!
+}
