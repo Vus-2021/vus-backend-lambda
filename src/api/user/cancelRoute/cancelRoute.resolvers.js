@@ -2,10 +2,6 @@
 const dayjs = require('dayjs');
 const { get, transaction } = require('../../../services');
 
-/**
- * TODO 신청 취소할때. 취소한 월이 탑승 월보다 전일때는 컬럼을 삭제, 그게 아니면 cancelled toggle,
- */
-
 const resolvers = {
     Mutation: {
         cancelRoute: async (parent, { busId, month }, { user }) => {

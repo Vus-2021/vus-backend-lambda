@@ -1,6 +1,6 @@
 const { ApolloServer } = require('apollo-server-lambda');
 const schema = require('./graphql/mergeSchema');
-//const formatError = require('./graphql/formatError');
+const formatError = require('./graphql/formatError');
 const auth = require('./graphql/context');
 const dbConnect = require('./model/dbConnect');
 
@@ -10,17 +10,18 @@ dbConnect(process.env.DB)
 
 const server = new ApolloServer({
     schema,
+    formatError,
     context: async ({ event, context }) => {
         return {
             headers: event.headers,
             functionName: context.functionName,
             event,
             context,
-            user: await auth({ headers: event.headers }),
+            user: (await auth({ headers: event.headers })).user,
         };
     },
     playground: {
-        endpoint: '/dev/apollo',
+        endpoint: '/dev/graphql',
     },
 });
 

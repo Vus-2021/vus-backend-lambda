@@ -2,11 +2,7 @@ const { query } = require('../../../../services');
 
 const resolvers = {
     Query: {
-        getRouteByMonth: async (parent, { partitionKey }, { user }) => {
-            if (!user || user.type !== 'ADMIN') {
-                return { success: false, message: 'access denied', code: 403 };
-            }
-
+        getRouteByMonth: async (parent, { partitionKey }) => {
             const params = {
                 partitionKey: [partitionKey, 'eq'],
                 sortKey: ['#2', 'beginsWith'],
