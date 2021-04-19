@@ -5,7 +5,7 @@ type Mutation {
         lat: Float!
         long: Float!
         boardingTime: String!
-        file: Upload
+        imageUrl: String!
     ): createRouteDetailResponse
 }
 

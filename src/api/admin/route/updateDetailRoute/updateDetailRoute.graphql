@@ -6,7 +6,7 @@ type Mutation {
         long: Float!
         location: String!
         route: String!
-        file: Upload
+        imageUrl: String
     ): updateAdminNoticeResponse
 }
 

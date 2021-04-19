@@ -1,10 +1,6 @@
 const { transaction, get } = require('../../../../services');
 
 const uuid = require('uuid');
-const uploadS3 = require('../../../../modules/s3');
-/**
- * Todo Transaction
- */
 
 const resolvers = {
     Mutation: {
@@ -12,10 +8,9 @@ const resolvers = {
             if (!user || user.type !== 'ADMIN') {
                 return { success: false, message: 'access denied', code: 403 };
             }
-            const { busNumber, limitCount, driver, route } = args;
+            const { busNumber, limitCount, driver, route, imageUrl } = args;
             const [partitionKey, sortKey, gsiSortKey] = [uuid.v4(), '#info', route];
             try {
-                let routeInfo;
                 const { data: alreadyDriver } = await get({
                     partitionKey: driver.userId,
                     sortKey: '#driver',
@@ -28,19 +23,7 @@ const resolvers = {
                     };
                 }
 
-                if (!args.file) {
-                    routeInfo = { busNumber, limitCount, driver };
-                } else {
-                    const { createReadStream, filename } = await args.file;
-                    const fileStream = createReadStream();
-                    const fileInfo = await uploadS3({ fileStream, filename });
-                    routeInfo = {
-                        busNumber,
-                        limitCount,
-                        driver,
-                        imageUrl: fileInfo.Location,
-                    };
-                }
+                let routeInfo = { busNumber, limitCount, driver, imageUrl };
 
                 const driverPk = { partitionKey: driver.userId, sortKey: '#driver' };
 

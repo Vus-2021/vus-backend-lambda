@@ -1,19 +1,17 @@
-const uploadS3 = require('../../../../modules/s3');
 const { get, query, transaction } = require('../../../../services');
 
 const resolvers = {
     Mutation: {
         updateRoute: async (
             _,
-            { partitionKey, route, busNumber, limitCount, driver, file },
+            { partitionKey, route, busNumber, limitCount, driver, imageUrl },
             { user }
         ) => {
             if (!user || user.type !== 'ADMIN') {
                 return { success: false, message: 'access denied', code: 403 };
             }
             const driverPk = { partitionKey: driver.userId, sortKey: '#driver' };
-            let updateItem;
-            updateItem = { gsiSortKey: route, busNumber, limitCount, driver };
+            let updateItem = { gsiSortKey: route, busNumber, limitCount, driver, imageUrl };
             const Update = [];
             const Delete = [];
             try {
@@ -53,13 +51,6 @@ const resolvers = {
                             long: item.long,
                         };
                     });
-                }
-
-                if (file) {
-                    const { createReadStream, filename } = await file;
-                    const fileStream = createReadStream();
-                    const fileInfo = await uploadS3({ fileStream, filename });
-                    Object.assign(updateItem, { imageUrl: fileInfo.Location });
                 }
 
                 if (detailList) {
