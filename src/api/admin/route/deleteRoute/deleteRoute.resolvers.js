@@ -1,4 +1,4 @@
-const { get, deleteItem, query } = require('../../../../services');
+const { get, transaction, query } = require('../../../../services');
 /**
  * TODO onDelete
  */
@@ -10,11 +10,13 @@ const resolvers = {
                 return { success: false, message: 'access denied', code: 403 };
             }
             const sortKey = '#info';
+            let Delete = [];
             try {
                 let { success, message, code, data } = await get({ partitionKey, sortKey });
                 if (!data) {
                     return { success: false, message: 'invalide Route Id', code: 400 };
                 }
+                const driver = data.driver;
                 const route = data.gsiSortKey;
                 ({ success, message, code, data } = await query({
                     params: {
@@ -25,21 +27,25 @@ const resolvers = {
                         route: [route, 'eq'],
                     },
                 }));
-
                 if (data) {
-                    const detailList = data.map((item) => {
+                    Delete = data.map((item) => {
                         return {
-                            partitionKey: item.partitionKey,
-                            sortKey: '#detail',
+                            primaryKey: {
+                                partitionKey: item.partitionKey,
+                                sortKey: '#detail',
+                            },
                         };
                     });
-                    for (let detail of detailList) {
-                        ({ success, message, code } = await deleteItem(detail));
-                    }
                 }
+                Delete.push({
+                    primaryKey: {
+                        partitionKey: driver.userId,
+                        sortKey: '#driver',
+                    },
+                });
+                Delete.push({ primaryKey: { partitionKey, sortKey } });
 
-                ({ success, message, code } = await deleteItem({ partitionKey, sortKey }));
-
+                ({ success, message, code } = await transaction({ Delete }));
                 return { success, message, code };
             } catch (error) {
                 return { success: false, message: error.message, code: 500 };
