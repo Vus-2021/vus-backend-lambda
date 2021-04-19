@@ -13,17 +13,23 @@ provider:
     region: ap-northeast-2
     lambdaHashingVersion: 20201221
     apiGateway: { shouldStartNameWithService: true }
-    iamRoleStatements:
-        - Effect: Allow
-          Action:
-              - dynamodb:Scan
-              - dynamodb:Query
-              - dynamodb:GetItem
-              - dynamodb:PutItem
-              - dynamodb:UpdateItem
-              - dynamodb:DeleteItem
-              - dynamodb:DescribeTable
-          Resource: 'arn:aws:dynamodb:ap-northeast-2:*:*'
+    iam:
+        role:
+            statements:
+                - Effect: Allow
+                  Action:
+                      - dynamodb:Scan
+                      - dynamodb:Query
+                      - dynamodb:GetItem
+                      - dynamodb:PutItem
+                      - dynamodb:UpdateItem
+                      - dynamodb:DeleteItem
+                      - dynamodb:DescribeTable
+                  Resource: 'arn:aws:dynamodb:ap-northeast-2:*:*'
+                - Effect: Allow
+                  Action:
+                      - s3:PutObject
+                  Resource: 'arn:aws:s3:::'
 
 functions:
     graphql:
