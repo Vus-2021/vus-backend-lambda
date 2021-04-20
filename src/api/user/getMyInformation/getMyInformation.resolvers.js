@@ -1,7 +1,5 @@
 const { query } = require('../../../services');
-/**
- * TOdo  driver는 sk 가 #driver, 그리고 노선 선택할때 #driver에 추가해줄것.
- */
+
 const resolvers = {
     Query: {
         getMyInformation: async (parent, args, context) => {
@@ -12,7 +10,6 @@ const resolvers = {
             try {
                 let { data } = await query({ params });
                 let info;
-                console.log(data);
                 if (context.user.type === 'DRIVER') {
                     info = data
                         .filter((item) => {
