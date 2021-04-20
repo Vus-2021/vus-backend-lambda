@@ -1,4 +1,5 @@
 const { ApolloServer } = require('apollo-server-lambda');
+const { ApolloServerPluginUsageReporting } = require('apollo-server-core');
 const schema = require('./graphql/mergeSchema');
 const formatError = require('./graphql/formatError');
 const auth = require('./graphql/context');
@@ -20,9 +21,11 @@ const server = new ApolloServer({
             user: (await auth({ headers: event.headers })).user,
         };
     },
-    playground: {
-        endpoint: '/dev/graphql',
-    },
+    plugins: [
+        ApolloServerPluginUsageReporting({
+            sendVariableValues: { all: true },
+        }),
+    ],
 });
 
 exports.graphqlHandler = server.createHandler({

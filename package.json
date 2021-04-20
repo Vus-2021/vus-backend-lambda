@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "apollo-server": "^2.21.1",
+    "apollo-server-core": "^2.23.0",
     "apollo-server-lambda": "^2.18.0-rc.1",
     "aws-sdk": "^2.864.0",
     "cors": "^2.8.5",
