@@ -8,6 +8,16 @@ type information {
     userId: String
     type: UserType
     routeInfo: [applyRoutesInfo]
+    routeStates: [routeState]
+}
+
+type routeState {
+    partitionKey: String
+    route: String
+    busId: String
+    month: String
+    state: String
+    isCancellation: String
 }
 
 type getMyInformationResponse implements Response {
