@@ -18,6 +18,8 @@ type routeState {
     month: String
     state: String
     isCancellation: String
+    location: String
+    boardingTime: String
 }
 
 type getMyInformationResponse implements Response {

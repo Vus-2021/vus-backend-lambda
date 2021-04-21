@@ -1,4 +1,4 @@
-const { query } = require('../../../services');
+const { query, get } = require('../../../services');
 
 const resolvers = {
     Query: {
@@ -54,10 +54,26 @@ const resolvers = {
                                     month: item.sortKey.split('#')[2],
                                     state: item.state,
                                     isCancellation: item.isCancellation,
+                                    detailPartitionKey: item.detailPartitionKey,
                                 };
                             }),
                     }
                 );
+                if (obj.type !== 'DRIVER') {
+                    for (let index in obj.routeStates) {
+                        let state = obj.routeStates[index];
+                        let details = (
+                            await get({
+                                partitionKey: state.detailPartitionKey,
+                                sortKey: '#detail',
+                            })
+                        ).data;
+                        obj.routeStates[index] = Object.assign(obj.routeStates[index], {
+                            location: details.location,
+                            boardingTime: details.gsiSortKey.split('#')[2],
+                        });
+                    }
+                }
                 return {
                     success: true,
                     message: 'success get my information',
