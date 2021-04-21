@@ -60,7 +60,8 @@ const resolvers = {
                     return {
                         partitionKey: fulfilledInfo.detailPartitionKey,
                         sortKey: `#${month}#${fulfilledInfo.partitionKey}`,
-                        gsiSortKey: `#user#${fulfilledInfo.partitionKey}`,
+                        gsiSortKey: route,
+                        userId: fulfilledInfo.partitionKey,
                         name: fulfilledInfo.userName,
                         phoneNumber: fulfilledInfo.phoneNumber,
                     };
@@ -85,7 +86,7 @@ const resolvers = {
                     Update,
                     Put: fulfilledByDetailLocationKey,
                 }));
-
+                console.log(fulfilledByDetailLocationKey);
                 return { success, message, code };
             } catch (error) {
                 console.log(error);

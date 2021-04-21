@@ -1,5 +1,5 @@
 type Query {
-    getDetailRoutes(route: String!, currentLocation: Boolean): RouteDetailResponse
+    getDetailRoutes(route: String!, currentLocation: Boolean, month: String): RouteDetailResponse
 }
 
 type RouteDetailResponse implements Response {
@@ -22,4 +22,14 @@ type RouteDetail {
     updatedAt: String
     currentLocation: Boolean
     locationIndex: Int
+    passengers: [passengers]
+}
+
+type passengers {
+    name: String
+    userId: String
+    route: String
+    partitionKey: String
+    month: String
+    phoneNumber: String
 }

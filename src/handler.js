@@ -26,6 +26,9 @@ const server = new ApolloServer({
             sendVariableValues: { all: true },
         }),
     ],
+    playground: {
+        endpoint: '/dev/graphql',
+    },
 });
 
 exports.graphqlHandler = server.createHandler({
