@@ -7,13 +7,13 @@ const resolvers = {
             try {
                 const params = {
                     sortKey: ['#detail', 'eq'],
-                    currentLocation: [currentLocation, 'eq'],
                     index: ['sk-index', 'using'],
                     sort: ['ascending', 'sort'],
                 };
 
                 const filterExpression = {
                     route: [route, 'eq'],
+                    currentLocation: [currentLocation, 'eq'],
                 };
 
                 const { success, message, code, data } = await query({

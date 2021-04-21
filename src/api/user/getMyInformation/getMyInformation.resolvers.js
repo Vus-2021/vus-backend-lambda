@@ -68,10 +68,12 @@ const resolvers = {
                                 sortKey: '#detail',
                             })
                         ).data;
-                        obj.routeStates[index] = Object.assign(obj.routeStates[index], {
-                            location: details.location,
-                            boardingTime: details.gsiSortKey.split('#')[2],
-                        });
+                        if (details) {
+                            obj.routeStates[index] = Object.assign(obj.routeStates[index], {
+                                location: details.location,
+                                boardingTime: details.gsiSortKey.split('#')[2],
+                            });
+                        }
                     }
                 }
                 return {
