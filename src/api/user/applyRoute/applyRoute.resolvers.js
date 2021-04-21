@@ -9,7 +9,11 @@ const { get, query, transaction } = require('../../../services');
  */
 const resolvers = {
     Mutation: {
-        applyRoute: async (parent, { route, month, partitionKey, userId }, { user }) => {
+        applyRoute: async (
+            parent,
+            { route, month, partitionKey, userId, detailPartitionKey },
+            { user }
+        ) => {
             if (!user) {
                 return { success: false, message: 'access denied', code: 403 };
             }
@@ -63,6 +67,9 @@ const resolvers = {
                     previousMonthState,
                     registerDate: userInfo.gsiSortKey.split('#')[2],
                     createdAt: dateNow(),
+                    detailPartitionKey,
+                    userName: userInfo.name,
+                    phoneNumber: userInfo.phoneNumber,
                 };
 
                 const busInfo = {

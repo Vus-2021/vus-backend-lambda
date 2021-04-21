@@ -2,6 +2,10 @@
 const dayjs = require('dayjs');
 const { get, transaction } = require('../../../services');
 
+/**
+ * TODO 신청 취소할때. 취소한 월이 탑승 월보다 전일때는 컬럼을 삭제, 그게 아니면 cancelled toggle,
+ */
+
 const resolvers = {
     Mutation: {
         cancelRoute: async (parent, { busId, month }, { user }) => {
@@ -17,6 +21,12 @@ const resolvers = {
                     sortKey: `#applyRoute#${month}`,
                 }));
 
+                const userInfoByDetailLocation = Object.assign({
+                    primaryKey: {
+                        partitionKey: data.detailPartitionKey,
+                        sortKey: `#${month}#${data.partitionKey}`,
+                    },
+                });
                 if (!data) {
                     return { success: false, message: '이미 취소 되었음', code: 400 };
                 }
@@ -56,6 +66,7 @@ const resolvers = {
                                 updateItem: { registerCount: -1 },
                             },
                         ],
+                        Delete: [userInfoByDetailLocation],
                     }));
                 } else {
                     ({ success, message, code } = await transaction({
@@ -66,6 +77,7 @@ const resolvers = {
                                     sortKey: `#applyRoute#${month}`,
                                 },
                             },
+                            userInfoByDetailLocation,
                         ],
                         Update: [
                             {

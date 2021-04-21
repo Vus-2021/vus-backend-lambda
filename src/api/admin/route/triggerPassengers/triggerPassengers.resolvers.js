@@ -41,6 +41,7 @@ const resolvers = {
                     sortType,
                     monthArg,
                 });
+
                 const fulfilledKeys = fulfilled.map((item) => {
                     return {
                         partitionKey: item.partitionKey,
@@ -52,6 +53,16 @@ const resolvers = {
                     return {
                         partitionKey: item.partitionKey,
                         sortKey: item.sortKey,
+                    };
+                });
+
+                const fulfilledByDetailLocationKey = fulfilled.map((fulfilledInfo) => {
+                    return {
+                        partitionKey: fulfilledInfo.detailPartitionKey,
+                        sortKey: `#${month}#${fulfilledInfo.partitionKey}`,
+                        gsiSortKey: `#user#${fulfilledInfo.partitionKey}`,
+                        name: fulfilledInfo.userName,
+                        phoneNumber: fulfilledInfo.phoneNumber,
                     };
                 });
 
@@ -69,7 +80,11 @@ const resolvers = {
                         method: 'SET',
                     });
                 }
-                ({ success, message, code, data } = await transaction({ Update }));
+
+                ({ success, message, code, data } = await transaction({
+                    Update,
+                    Put: fulfilledByDetailLocationKey,
+                }));
 
                 return { success, message, code };
             } catch (error) {

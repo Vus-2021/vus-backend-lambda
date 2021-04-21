@@ -4,6 +4,7 @@ type Mutation {
         month: String!
         partitionKey: String!
         userId: String
+        detailPartitionKey: String!
     ): applyRouteResponse
 }
 

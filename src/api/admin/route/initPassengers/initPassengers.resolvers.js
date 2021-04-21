@@ -7,6 +7,7 @@ const resolvers = {
                 return { success: false, message: 'access denied', code: 403 };
             }
             let Update = [];
+            let Delete = [];
             try {
                 let { data: users } = await query({
                     params: {
@@ -27,7 +28,16 @@ const resolvers = {
                     };
                 });
 
-                const { success, message, code } = await transaction({ Update });
+                Delete = users.map((item) => {
+                    return {
+                        primaryKey: {
+                            partitionKey: item.detailPartitionKey,
+                            sortKey: `#${month}#${item.partitionKey}`,
+                        },
+                    };
+                });
+
+                const { success, message, code } = await transaction({ Update, Delete });
                 return { success, message, code };
             } catch (error) {
                 return { success: false, message: error.message, code: 500 };
