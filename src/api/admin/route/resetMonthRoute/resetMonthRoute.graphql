@@ -1,5 +1,10 @@
 type Mutation {
-    resetMonthRoute(month: String!, route: String!, busId: String!): resetMonthRouteResponse
+    resetMonthRoute(
+        month: String!
+        route: String!
+        busId: String!
+        userId: [String]!
+    ): resetMonthRouteResponse
 }
 
 type resetMonthRouteResponse implements Response {

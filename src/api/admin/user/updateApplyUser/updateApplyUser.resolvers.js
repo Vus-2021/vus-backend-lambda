@@ -2,7 +2,7 @@ const { update } = require('../../../../services');
 
 const resolvers = {
     Mutation: {
-        updateApplyUser: async (parent, { userId, month, state }, { user }) => {
+        updateApplyUser: async (parent, { userId, month, state, isCancellation }, { user }) => {
             if (!user || user.type !== 'ADMIN') {
                 return { success: false, message: 'access denied', code: 403 };
             }
@@ -14,6 +14,7 @@ const resolvers = {
                     },
                     updateItem: {
                         state: state,
+                        isCancellation: isCancellation,
                     },
                     method: 'SET',
                 });

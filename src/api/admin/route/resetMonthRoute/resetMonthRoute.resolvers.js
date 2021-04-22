@@ -1,19 +1,14 @@
-const { get, deleteItem, update, query } = require('../../../../services');
+const { get, transaction } = require('../../../../services');
 /**
  * Transaction
  */
 
 const resolvers = {
     Mutation: {
-        resetMonthRoute: async (parent, { busId, month, route }, { user }) => {
+        resetMonthRoute: async (parent, { busId, month, route, userId }, { user }) => {
             if (!user || user.type !== 'ADMIN') {
                 return { success: false, message: 'access denied', code: 403 };
             }
-            const params = {
-                sortKey: [`#applyRoute#${month}`, 'eq'],
-                gsiSortKey: [route, 'eq'],
-                index: ['sk-index', 'using'],
-            };
 
             try {
                 let { success, message, code, data } = {};
@@ -36,14 +31,12 @@ const resolvers = {
                     return { success: false, message: 'invalid route', code: 400 };
                 }
 
-                const userList = (
-                    await query({
-                        params,
-                    })
-                ).data.map((item) => {
+                const userList = userId.map((item) => {
                     return {
-                        partitionKey: item.partitionKey,
-                        sortKey: `#applyRoute#${month}`,
+                        primaryKey: {
+                            partitionKey: item,
+                            sortKey: `#applyRoute#${month}`,
+                        },
                     };
                 });
                 const bus = {
@@ -51,14 +44,15 @@ const resolvers = {
                     sortKey: `#${month}`,
                 };
 
-                for (let user of userList) {
-                    ({ success, message, code } = await deleteItem(user));
-                }
-
-                ({ success, message, code } = await update({
-                    primaryKey: bus,
-                    updateItem: { registerCount: 0 },
-                    method: 'SET',
+                ({ success, message, code } = await transaction({
+                    Delete: userList,
+                    Update: [
+                        {
+                            primaryKey: bus,
+                            updateItem: { registerCount: -1 * userId.length },
+                            method: 'ADD',
+                        },
+                    ],
                 }));
 
                 return { success, message, code };
