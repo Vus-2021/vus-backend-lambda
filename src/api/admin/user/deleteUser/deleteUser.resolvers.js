@@ -1,4 +1,4 @@
-const { deleteItem, query, update } = require('../../../../services');
+const { query, transaction } = require('../../../../services');
 
 const resolvers = {
     Mutation: {
@@ -6,6 +6,8 @@ const resolvers = {
             if (!user || user.type !== 'ADMIN') {
                 return { success: false, message: 'access denied', code: 403 };
             }
+            let Update = [];
+            let Delete = [];
             try {
                 let list = [];
                 for (let item of args.userId) {
@@ -14,6 +16,20 @@ const resolvers = {
                             partitionKey: [item, 'eq'],
                         },
                     });
+                    Delete.push(
+                        ...data
+                            .filter((item) => item.detailPartitionKey)
+                            .map((detail) => {
+                                return {
+                                    primaryKey: {
+                                        partitionKey: detail.detailPartitionKey,
+                                        sortKey: `#${detail.sortKey.split('#')[2]}#${
+                                            detail.partitionKey
+                                        }`,
+                                    },
+                                };
+                            })
+                    );
                     list.push(
                         ...data.map((dataItem) => {
                             return {
@@ -42,7 +58,7 @@ const resolvers = {
                     });
 
                 for (let item of route) {
-                    await update({
+                    Update.push({
                         primaryKey: item,
                         method: 'ADD',
                         updateItem: { registerCount: -1 },
@@ -50,10 +66,10 @@ const resolvers = {
                 }
 
                 for (let user of userList) {
-                    await deleteItem(user);
+                    Delete.push({ primaryKey: user });
                 }
-
-                return { success: true, message: '삭제 성공', code: 204 };
+                const { success, message, code } = await transaction({ Update, Delete });
+                return { success, message, code };
             } catch (error) {
                 return { success: false, message: 'Failed delete users', code: 500 };
             }
