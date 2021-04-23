@@ -8,7 +8,7 @@ const resolvers = {
                 partitionKey: [context.user.userId, 'eq'],
             };
             try {
-                let { data } = await query({ params });
+                let { data } = await query({ params, tableName: process.env.TABLE_NAME });
                 let info;
                 if (context.user.type === 'DRIVER') {
                     info = data
@@ -66,6 +66,7 @@ const resolvers = {
                             await get({
                                 partitionKey: state.detailPartitionKey,
                                 sortKey: '#detail',
+                                tableName: process.env.TABLE_NAME,
                             })
                         ).data;
                         if (details) {

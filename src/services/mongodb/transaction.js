@@ -1,7 +1,8 @@
+/* eslint-disable no-unused-vars */
 const vus = require('../../model/mongodb');
 const _ = require('lodash');
 const updateMap = new Map().set('SET', '$set').set('ADD', `$inc`);
-const transaction = async (args) => {
+const transaction = async ({ tableName, ...args }) => {
     try {
         const existedParameters = Object.entries(args).filter((value) => value[1] != undefined);
         const session = await vus.startSession();

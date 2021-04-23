@@ -14,6 +14,7 @@ const resolvers = {
             try {
                 ({ success, message, code, data: result } = await query({
                     params,
+                    tableName: process.env.TABLE_NAME,
                 }));
                 const data = result.map((item) => {
                     return {
@@ -32,6 +33,7 @@ const resolvers = {
                     filterExpression: {
                         currentLocation: [true, 'eq'],
                     },
+                    tableName: process.env.TABLE_NAME,
                 }));
 
                 data.forEach((item) => {

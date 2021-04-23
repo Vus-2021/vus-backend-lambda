@@ -12,6 +12,7 @@ const resolvers = {
                     sortKey: `#${args.month}`,
                     registerCount: 0,
                     gsiSortKey: args.route,
+                    tableName: process.env.TABLE_NAME,
                 });
 
                 return { success, message, code };

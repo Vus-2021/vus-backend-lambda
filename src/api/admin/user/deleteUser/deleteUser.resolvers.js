@@ -15,6 +15,7 @@ const resolvers = {
                         params: {
                             partitionKey: [item, 'eq'],
                         },
+                        tableName: process.env.TABLE_NAME,
                     });
                     Delete.push(
                         ...data
@@ -68,7 +69,11 @@ const resolvers = {
                 for (let user of userList) {
                     Delete.push({ primaryKey: user });
                 }
-                const { success, message, code } = await transaction({ Update, Delete });
+                const { success, message, code } = await transaction({
+                    Update,
+                    Delete,
+                    tableName: process.env.TABLE_NAME,
+                });
                 return { success, message, code };
             } catch (error) {
                 return { success: false, message: 'Failed delete users', code: 500 };

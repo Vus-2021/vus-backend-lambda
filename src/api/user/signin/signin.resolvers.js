@@ -10,6 +10,7 @@ const resolvers = {
             let { data: getUser } = await get({
                 partitionKey: userId,
                 sortKey: '#user',
+                tableName: process.env.TABLE_NAME,
             });
             if (_.isNil(getUser)) {
                 return { success: false, message: 'invalid user Id', code: 400 };
@@ -19,6 +20,7 @@ const resolvers = {
             const { success, data: user, message, code } = await get({
                 partitionKey: userId,
                 sortKey: '#user',
+                tableName: process.env.TABLE_NAME,
             });
 
             if (user.password !== hashedPassword) {

@@ -31,6 +31,7 @@ const resolvers = {
                 const { data: alreadyApply } = await get({
                     partitionKey: user.userId,
                     sortKey: `#applyRoute#${month}`,
+                    tableName: process.env.TABLE_NAME,
                 });
 
                 if (alreadyApply) {
@@ -39,6 +40,7 @@ const resolvers = {
 
                 const { data: result } = await query({
                     params,
+                    tableName: process.env.TABLE_NAME,
                 });
 
                 if (result.count === 0) {
@@ -47,6 +49,7 @@ const resolvers = {
                 const { data: previousMonth } = await get({
                     partitionKey: user.userId,
                     sortKey: `#applyRoute#${dayjs(month).subtract(1, 'month').format('YYYY-MM')}`,
+                    tableName: process.env.TABLE_NAME,
                 });
                 const previousMonthState = _.isNil(previousMonth)
                     ? 'notApply'
@@ -55,6 +58,7 @@ const resolvers = {
                 const { data: userInfo } = await get({
                     partitionKey: user.userId,
                     sortKey: '#user',
+                    tableName: process.env.TABLE_NAME,
                 });
 
                 const userApplyData = {
@@ -83,6 +87,7 @@ const resolvers = {
                 const { success, message, code } = await transaction({
                     Put: [userApplyData],
                     Update: [busInfo],
+                    tableName: process.env.TABLE_NAME,
                 });
 
                 return { success, message, code };

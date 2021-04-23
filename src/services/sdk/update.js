@@ -3,7 +3,7 @@ const AWS = require('aws-sdk');
 
 const documentClient = new AWS.DynamoDB.DocumentClient();
 
-const update = async (args) => {
+const update = async ({ tableName, ...args }) => {
     const ExpressionAttributeNames = Object.entries({
         ...args.updateItem,
     }).reduce((acc, [key, _]) => {
@@ -29,7 +29,7 @@ const update = async (args) => {
         .slice(0, -1);
 
     const params = {
-        TableName: process.env.TABLE_NAME,
+        TableName: tableName,
         Key: args.primaryKey,
         UpdateExpression,
         ExpressionAttributeNames,

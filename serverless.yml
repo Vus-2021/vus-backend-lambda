@@ -39,3 +39,40 @@ functions:
                   path: graphql
                   method: any
                   cors: true
+    websocket-connect:
+        handler: src/webSockets/connect.handler
+        events:
+            - websocket:
+                  route: $connect
+    websocket-disconnect:
+        handler: src/webSockets/disconnect.handler
+        events:
+            - websocket:
+                  route: $disconnect
+    websocket-default:
+        handler: src/webSockets/default.handler
+        events:
+            - websocket:
+                  route: $default
+    websocket-message:
+        handler: src/webSockets/message.handler
+        events:
+            - websocket:
+                  route: message
+
+custom:
+    tableName: TEST-WebsocketUsers
+
+resources:
+    Resources:
+        WebsocketUserTable:
+            Type: AWS::DynamoDB::Table
+            Properties:
+                TableName: ${self:custom.tableName}
+                AttributeDefinitions:
+                    - AttributeName: ID
+                      AttributeType: S
+                KeySchema:
+                    - AttributeName: ID
+                      KeyType: Hash
+                BillingMode: PAY_PER_REQUEST

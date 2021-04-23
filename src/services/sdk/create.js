@@ -1,9 +1,9 @@
 const AWS = require('aws-sdk');
 const documentClient = new AWS.DynamoDB.DocumentClient();
 
-const create = async (args) => {
+const create = async ({ tableName, ...args }) => {
     const params = {
-        TableName: process.env.TABLE_NAME,
+        TableName: tableName,
         Item: args,
     };
     try {

@@ -1,6 +1,7 @@
+/* eslint-disable no-unused-vars */
 const vus = require('../../model/dynamoose');
 
-const get = async (args) => {
+const get = async ({ tableName, ...args }) => {
     try {
         console.log(vus);
         const data = await vus.get(args);

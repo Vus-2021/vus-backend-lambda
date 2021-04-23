@@ -17,7 +17,7 @@ const valueMap = (method, value) => {
 
     return valueMap.get(method);
 };
-const query = async function ({ params, filterExpression }) {
+const query = async function ({ params, filterExpression, tableName }) {
     try {
         let query = vus.find();
 

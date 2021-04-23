@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 const vus = require('../../model/dynamoose');
-const query = async function ({ params, filterExpression }) {
+const query = async function ({ params, filterExpression, tableName }) {
     try {
         let query = vus.query();
 

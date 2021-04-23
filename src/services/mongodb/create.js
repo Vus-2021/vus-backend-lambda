@@ -1,6 +1,6 @@
 const vus = require('../../model/mongodb');
 
-const create = async (args) => {
+const create = async ({ tableName, ...args }) => {
     try {
         await new vus({
             ...args,

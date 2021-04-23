@@ -15,6 +15,7 @@ const resolvers = {
                         gsiSortKey: [route, 'eq'],
                         index: ['sk-index', 'using'],
                     },
+                    tableName: process.env.TABLE_NAME,
                 });
 
                 Update = users.map((item) => {
@@ -37,7 +38,11 @@ const resolvers = {
                     };
                 });
 
-                const { success, message, code } = await transaction({ Update, Delete });
+                const { success, message, code } = await transaction({
+                    Update,
+                    Delete,
+                    tableName: process.env.TABLE_NAME,
+                });
                 return { success, message, code };
             } catch (error) {
                 return { success: false, message: error.message, code: 500 };

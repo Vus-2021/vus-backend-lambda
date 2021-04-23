@@ -1,8 +1,9 @@
+/* eslint-disable no-unused-vars */
 const vus = require('../../model/dynamoose');
 const dynamoose = require('dynamoose');
 const _ = require('lodash');
 
-const transaction = async (args) => {
+const transaction = async ({ tableName, ...args }) => {
     const transactionList = [];
     const existedParameters = Object.entries(args).filter((value) => value[1] != undefined);
     for (let [method, transaction] of existedParameters) {

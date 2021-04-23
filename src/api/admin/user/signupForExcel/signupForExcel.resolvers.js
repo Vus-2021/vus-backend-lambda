@@ -13,6 +13,7 @@ const resolvers = {
                 let { data: alreadyUser } = await get({
                     partitionKey: user.userId,
                     sortKey: '#user',
+                    tableName: process.env.TABLE_NAME,
                 });
                 if (alreadyUser) {
                     alreadyUsers.push(user);
@@ -41,7 +42,10 @@ const resolvers = {
             if (newUsers.length === 0) {
                 return { success: true, message: 'success', code: 204, data: alreadyUsers };
             }
-            const { success, message, code } = await transaction({ Put: newUsers });
+            const { success, message, code } = await transaction({
+                Put: newUsers,
+                tableName: process.env.TABLE_NAME,
+            });
             return { success, message, code, data: alreadyUsers };
         },
     },

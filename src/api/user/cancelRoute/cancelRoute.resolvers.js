@@ -19,6 +19,7 @@ const resolvers = {
                 ({ success, message, code, data } = await get({
                     partitionKey: user.userId,
                     sortKey: `#applyRoute#${month}`,
+                    tableName: process.env.TABLE_NAME,
                 }));
 
                 const userInfoByDetailLocation = Object.assign({
@@ -38,6 +39,7 @@ const resolvers = {
                 ({ success, message, code, data } = await get({
                     partitionKey: busId,
                     sortKey: `#${month}`,
+                    tableName: process.env.TABLE_NAME,
                 }));
 
                 if (!data) {
@@ -67,6 +69,7 @@ const resolvers = {
                             },
                         ],
                         Delete: [userInfoByDetailLocation],
+                        tableName: process.env.TABLE_NAME,
                     }));
                 } else {
                     ({ success, message, code } = await transaction({
@@ -86,6 +89,7 @@ const resolvers = {
                                 updateItem: { registerCount: -1 },
                             },
                         ],
+                        tableName: process.env.TABLE_NAME,
                     }));
                 }
                 return { success, message, code };

@@ -35,6 +35,7 @@ const resolvers = {
                 const { success, message, code, data: monthResult } = await query({
                     params,
                     filterExpression,
+                    tableName: process.env.TABLE_NAME,
                 });
 
                 const userIdList = monthResult.map((applicant) => applicant.partitionKey);
@@ -54,6 +55,7 @@ const resolvers = {
                     let { data: user } = await get({
                         partitionKey: userId,
                         sortKey: '#user',
+                        tableName: process.env.TABLE_NAME,
                     });
                     users.push(user);
                 }

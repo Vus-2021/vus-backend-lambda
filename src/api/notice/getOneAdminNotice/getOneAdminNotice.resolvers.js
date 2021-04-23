@@ -6,6 +6,7 @@ const resolvers = {
                 const { success, message, code, data } = await get({
                     partitionKey,
                     sortKey: '#notice',
+                    tableName: process.env.TABLE_NAME,
                 });
 
                 Object.assign(data, {

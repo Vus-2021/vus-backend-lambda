@@ -24,6 +24,7 @@ const resolvers = {
                     primaryKey: { partitionKey, sortKey: '#detail' },
                     updateItem,
                     method: 'SET',
+                    tableName: process.env.TABLE_NAME,
                 });
 
                 return { success, message, code };

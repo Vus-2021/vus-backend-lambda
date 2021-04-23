@@ -19,6 +19,7 @@ const resolvers = {
                 const { success, message, code, data } = await query({
                     params,
                     filterExpression,
+                    tableName: process.env.TABLE_NAME,
                 });
 
                 data.forEach((item) => {
@@ -30,6 +31,7 @@ const resolvers = {
                                 partitionKey: [item.partitionKey, 'eq'],
                                 sortKey: [`#${month}`, 'beginsWith'],
                             },
+                            tableName: process.env.TABLE_NAME,
                         })
                     );
                 });

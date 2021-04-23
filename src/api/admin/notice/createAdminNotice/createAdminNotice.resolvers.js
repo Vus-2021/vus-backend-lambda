@@ -21,6 +21,7 @@ const resolvers = {
                     content,
                     userId: user.userId,
                     name: user.name,
+                    tableName: process.env.TABLE_NAME,
                 });
 
                 return { success, message, code };

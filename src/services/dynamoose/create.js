@@ -1,6 +1,7 @@
+/* eslint-disable no-unused-vars */
 const vus = require('../../model/dynamoose');
 
-const create = async (args) => {
+const create = async ({ tableName, ...args }) => {
     try {
         await new vus({
             ...args,

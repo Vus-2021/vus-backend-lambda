@@ -9,6 +9,7 @@ const resolvers = {
                 const { success, message, code } = await deleteItem({
                     partitionKey,
                     sortKey: '#detail',
+                    tableName: process.env.TABLE_NAME,
                 });
                 return { success, message, code };
             } catch (error) {

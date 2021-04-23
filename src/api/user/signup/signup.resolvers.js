@@ -14,6 +14,7 @@ const resolvers = {
             const { data: user } = await get({
                 partitionKey: userId,
                 sortKey: '#user',
+                tableName: process.env.TABLE_NAME,
             });
             if (!_.isNil(user)) {
                 return { success: false, message: 'alreadyUserId', code: 400 };
@@ -29,6 +30,7 @@ const resolvers = {
                 name,
                 phoneNumber,
                 type,
+                tableName: process.env.TABLE_NAME,
             });
 
             if (!success) {

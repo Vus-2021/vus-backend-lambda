@@ -28,6 +28,7 @@ const resolvers = {
             try {
                 const { success, message, code } = await transaction({
                     Update,
+                    tableName: process.env.TABLE_NAME,
                 });
                 return { success, message, code };
             } catch (error) {

@@ -15,7 +15,10 @@ const resolvers = {
             let { success, message, code } = {};
             try {
                 for (let notice of noticeList) {
-                    ({ success, message, code } = await deleteItem(notice));
+                    ({ success, message, code } = await deleteItem({
+                        notice,
+                        tableName: process.env.TABLE_NAME,
+                    }));
                 }
                 return { success, message, code };
             } catch (error) {

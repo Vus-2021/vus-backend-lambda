@@ -15,9 +15,14 @@ const resolvers = {
             const Update = [];
             const Delete = [];
             try {
-                const thisRoute = (await get({ partitionKey, sortKey: '#info' })).data;
+                const thisRoute = (
+                    await get({ partitionKey, sortKey: '#info', tableName: process.env.TABLE_NAME })
+                ).data;
 
-                const { data: alreadyDriver } = await get(driverPk);
+                const { data: alreadyDriver } = await get({
+                    driverPk,
+                    tableName: process.env.TABLE_NAME,
+                });
                 if (alreadyDriver && !(driver.userId === thisRoute.driver.userId)) {
                     return {
                         success: false,
@@ -38,6 +43,7 @@ const resolvers = {
                         filterExpression: {
                             route: [thisRoute.gsiSortKey, 'eq'],
                         },
+                        tableName: process.env.TABLE_NAME,
                     });
 
                     detailList = details.map((item) => {
@@ -82,7 +88,10 @@ const resolvers = {
                     method: 'SET',
                 });
 
-                const { success, message, code } = await transaction({ Update });
+                const { success, message, code } = await transaction({
+                    Update,
+                    tableName: process.env.TABLE_NAME,
+                });
                 return { success, message, code };
             } catch (error) {
                 return { success: false, message: error.message, code: 500 };

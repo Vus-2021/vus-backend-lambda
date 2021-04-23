@@ -20,6 +20,7 @@ const resolvers = {
                     partitionKey,
                     sortKey,
                     gsiSortKey,
+                    tableName: process.env.TABLE_NAME,
                     ...routeDetail,
                 });
 

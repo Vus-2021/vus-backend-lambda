@@ -12,7 +12,11 @@ const resolvers = {
             const sortKey = '#info';
             let Delete = [];
             try {
-                let { success, message, code, data } = await get({ partitionKey, sortKey });
+                let { success, message, code, data } = await get({
+                    partitionKey,
+                    sortKey,
+                    tableName: process.env.TABLE_NAME,
+                });
                 if (!data) {
                     return { success: false, message: 'invalide Route Id', code: 400 };
                 }
@@ -26,6 +30,7 @@ const resolvers = {
                     filterExpression: {
                         route: [route, 'eq'],
                     },
+                    tableName: process.env.TABLE_NAME,
                 }));
                 if (data) {
                     Delete = data.map((item) => {
@@ -45,7 +50,10 @@ const resolvers = {
                 });
                 Delete.push({ primaryKey: { partitionKey, sortKey } });
 
-                ({ success, message, code } = await transaction({ Delete }));
+                ({ success, message, code } = await transaction({
+                    Delete,
+                    tableName: process.env.TABLE_NAME,
+                }));
                 return { success, message, code };
             } catch (error) {
                 return { success: false, message: error.message, code: 500 };

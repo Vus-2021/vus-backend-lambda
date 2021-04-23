@@ -11,9 +11,9 @@ const makeExpression = (key, method) => {
     return expressionMap.get(method);
 };
 
-const query = async function ({ params, filterExpression }) {
+const query = async function ({ params, filterExpression, tableName }) {
     let param = {
-        TableName: process.env.TABLE_NAME,
+        TableName: tableName,
         KeyConditionExpression: '',
         FilterExpression: '',
         ExpressionAttributeNames: {},

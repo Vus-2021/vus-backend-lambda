@@ -1,7 +1,8 @@
+/* eslint-disable no-unused-vars */
 const vus = require('../../model/mongodb');
 const updateMap = new Map().set('SET', '$set').set('ADD', `$inc`);
 
-const update = async (args) => {
+const update = async ({ tableName, ...args }) => {
     try {
         await vus.updateOne(args.primaryKey, {
             [updateMap.get(args.method)]: args.updateItem,

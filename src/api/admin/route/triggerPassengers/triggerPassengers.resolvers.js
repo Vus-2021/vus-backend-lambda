@@ -22,7 +22,11 @@ const resolvers = {
             const Update = [];
 
             try {
-                const bus = await get({ partitionKey: busId, sortKey: '#info' });
+                const bus = await get({
+                    partitionKey: busId,
+                    sortKey: '#info',
+                    tableName: process.env.TABLE_NAME,
+                });
 
                 ({ success, message, code, data } = await query({
                     params: {
@@ -30,6 +34,7 @@ const resolvers = {
                         gsiSortKey: [route, 'eq'],
                         index: ['sk-index', 'using'],
                     },
+                    tableName: process.env.TABLE_NAME,
                 }));
 
                 let applicants = data;
@@ -85,8 +90,9 @@ const resolvers = {
                 ({ success, message, code, data } = await transaction({
                     Update,
                     Put: fulfilledByDetailLocationKey,
+                    tableName: process.env.TABLE_NAME,
                 }));
-                console.log(fulfilledByDetailLocationKey);
+
                 return { success, message, code };
             } catch (error) {
                 console.log(error);

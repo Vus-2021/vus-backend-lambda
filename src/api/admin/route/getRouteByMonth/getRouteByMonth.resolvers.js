@@ -11,6 +11,7 @@ const resolvers = {
             try {
                 const { success, message, code, data } = await query({
                     params,
+                    tableName: process.env.TABLE_NAME,
                 });
                 data.forEach((item) => {
                     item.month = item.sortKey.split('#')[1];

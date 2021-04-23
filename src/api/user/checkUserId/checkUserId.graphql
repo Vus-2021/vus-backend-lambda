@@ -1,5 +1,5 @@
 type Query {
-    checkUserId(userId: String, sortKey: String): checkUserIdResponse
+    checkUserId(userId: String): checkUserIdResponse
 }
 
 type checkUserIdResponse implements Response {

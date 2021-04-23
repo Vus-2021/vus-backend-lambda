@@ -30,6 +30,7 @@ const resolvers = {
                 let { success, message, code, data } = await query({
                     params,
                     filterExpression,
+                    tableName: process.env.TABLE_NAME,
                 });
 
                 data.forEach((item) => {

@@ -14,6 +14,7 @@ const resolvers = {
                 const { data: alreadyDriver } = await get({
                     partitionKey: driver.userId,
                     sortKey: '#driver',
+                    tableName: process.env.TABLE_NAME,
                 });
                 if (alreadyDriver) {
                     return {
@@ -46,6 +47,7 @@ const resolvers = {
                             },
                         },
                     ],
+                    tableName: process.env.TABLE_NAME,
                 });
 
                 return { success, message, code };

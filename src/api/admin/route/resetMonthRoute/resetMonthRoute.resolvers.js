@@ -16,6 +16,7 @@ const resolvers = {
                 ({ success, message, code, data } = await get({
                     partitionKey: busId,
                     sortKey: `#${month}`,
+                    tableName: process.env.TABLE_NAME,
                 }));
 
                 if (!data) {
@@ -25,6 +26,7 @@ const resolvers = {
                 ({ success, message, code, data } = await get({
                     partitionKey: busId,
                     sortKey: `#info`,
+                    tableName: process.env.TABLE_NAME,
                 }));
 
                 if (data.gsiSortKey !== route) {
@@ -53,6 +55,7 @@ const resolvers = {
                             method: 'ADD',
                         },
                     ],
+                    tableName: process.env.TABLE_NAME,
                 }));
 
                 return { success, message, code };

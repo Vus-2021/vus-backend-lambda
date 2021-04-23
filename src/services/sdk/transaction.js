@@ -11,10 +11,10 @@ const makeUpdateExpression = (key, method) => {
     return expressionMap.get(method);
 };
 
-const transaction = async (args) => {
+const transaction = async ({ tableName, ...args }) => {
     const transactionItem = [];
     let updateParam;
-    const TableName = process.env.TABLE_NAME;
+    const TableName = tableName;
     const existedParameters = Object.entries(args).filter((value) => value[1] != undefined);
     for (let [method, transaction] of existedParameters) {
         for (let item of transaction) {

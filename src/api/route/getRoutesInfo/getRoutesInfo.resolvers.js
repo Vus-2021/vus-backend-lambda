@@ -19,6 +19,7 @@ const resolvers = {
                             sortKey: ['#info', 'eq'],
                             index: ['sk-index', 'using'],
                         },
+                        tableName: process.env.TABLE_NAME,
                     }));
                 } else {
                     ({ success, message, code, data: result } = await query({
@@ -27,6 +28,7 @@ const resolvers = {
                             gsiSortKey: [route, 'eq'],
                             index: ['sk-index', 'using'],
                         },
+                        tableName: process.env.TABLE_NAME,
                     }));
                 }
 
@@ -46,6 +48,7 @@ const resolvers = {
                             partitionKey: [partitionKey, 'eq'],
                             sortKey: [`#${month}`, 'beginsWith'],
                         },
+                        tableName: process.env.TABLE_NAME,
                     });
                     busInfo.push(...bus);
                 }

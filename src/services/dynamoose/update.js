@@ -1,6 +1,7 @@
+/* eslint-disable no-unused-vars */
 const vus = require('../../model/dynamoose');
 
-const update = async (args) => {
+const update = async ({ tableName, ...args }) => {
     try {
         await vus.update(args.primaryKey, { ['$' + args.method]: args.updateItem });
 

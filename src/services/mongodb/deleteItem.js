@@ -1,6 +1,6 @@
 const vus = require('../../model/mongodb');
 
-const deleteItem = async (args) => {
+const deleteItem = async ({ tableName, ...args }) => {
     try {
         await vus.deleteOne(args);
         return { success: true, message: '삭제 성공', code: 204 };
