@@ -1,5 +1,6 @@
-module.exports.hanlder = async (event) => {
+const Responses = require('../modules/socketResponse');
+exports.handler = async (event) => {
     console.log('event', event);
 
-    return { statusCode: 200, message: 'default' };
+    return Responses._200({ message: 'default' });
 };

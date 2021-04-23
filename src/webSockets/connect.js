@@ -1,15 +1,17 @@
 const { create } = require('../services/index');
+const Responses = require('../modules/socketResponse');
 
-module.exports.hanlder = async (event) => {
+exports.handler = async (event) => {
     console.log('event', event);
-    const { connectionId: connectionID } = event.requestContext;
-
+    const { connectionId: connectionID, domainName, stage } = event.requestContext;
+    const tableName = process.env.SOCKET_TABLE_NAME;
     const data = {
-        partitionKey: connectionID,
-        sortKey: '#socket',
+        ID: connectionID,
         date: Date.now(),
-        meesage: [],
+        messages: [],
+        domainName,
+        stage,
     };
-    await create(data);
-    return { statusCode: 200, message: 'connected' };
+    await create({ ...data, tableName });
+    return Responses._200({ message: 'connected' });
 };

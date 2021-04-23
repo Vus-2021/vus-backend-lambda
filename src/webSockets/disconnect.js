@@ -1,15 +1,11 @@
 const { deleteItem } = require('../services/index');
+const Responses = require('../modules/socketResponse');
 
-module.exports.hanlder = async (event) => {
+exports.handler = async (event) => {
     console.log('event', event);
     const { connectionId: connectionID } = event.requestContext;
+    const tableName = process.env.SOCKET_TABLE_NAME;
 
-    const data = {
-        primaryKey: {
-            partitionKey: connectionID,
-            sortKey: '#socket',
-        },
-    };
-    await deleteItem(data);
-    return { statusCode: 200, message: 'connected' };
+    await deleteItem({ ID: connectionID, tableName });
+    return Responses._200({ message: 'disconnected' });
 };
