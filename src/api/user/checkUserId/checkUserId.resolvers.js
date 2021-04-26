@@ -4,10 +4,10 @@ const resolvers = {
     Query: {
         checkUserId: async (_, args) => {
             try {
-                const { userId } = args;
+                const { userId, sortKey } = args;
                 const { success, message, data: alreadyUserId, code } = await get({
                     partitionKey: userId,
-                    sortKey: '#user',
+                    sortKey: sortKey,
                     tableName: process.env.TABLE_NAME,
                 });
 
