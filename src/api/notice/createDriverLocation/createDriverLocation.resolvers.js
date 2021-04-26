@@ -8,7 +8,7 @@ const dateNow = require('../../../modules/dateNow');
 const resolvers = {
     Mutation: {
         createDriverLocation: async (parent, args) => {
-            const { preKey, destinationKey, locationIndex } = args.input;
+            const { preKey, destinationKey, locationIndex, route } = args.input;
             const updatedAt = dateNow();
             const Update = [
                 {
@@ -36,7 +36,7 @@ const resolvers = {
 
                 if (success) {
                     const params = {
-                        Message: 'refetch',
+                        Message: route,
                         TopicArn: process.env.AWS_SNS_ARN,
                     };
 
@@ -52,7 +52,7 @@ const resolvers = {
                             console.log('MessageID is ' + data.MessageId);
                         })
                         .catch((err) => {
-                            console.error(err, err.stack);
+                            console.error('err', err);
                         });
                 }
                 return { success, message, code };

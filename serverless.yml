@@ -30,6 +30,15 @@ provider:
                   Action:
                       - s3:PutObject
                   Resource: 'arn:aws:s3:::'
+                - Effect: Allow
+                  Action:
+                      - SNS:GetTopicAttributes
+                      - SNS:DeleteTopic
+                      - SNS:Receive
+                      - SNS:ListSubcriptionsByTopic
+                      - SNS:Subscribe
+                      - SNS:Publish
+                  Resource: 'arn:aws:sns:ap-northeast-2:*:*'
 
 functions:
     graphql:

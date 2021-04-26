@@ -20,7 +20,7 @@ exports.handler = async (event) => {
                 domainName: item.domainName,
                 stage: item.stage,
                 connectionID: item.ID,
-                message: 'refetch',
+                message: event.Records[0].Sns.Message || 'refetch',
             });
         });
 
