@@ -25,9 +25,9 @@ exports.handler = async (event) => {
         });
 
         await Promise.all(postCalls);
-
         return Responses._200({ message: 'got a message' });
     } catch (error) {
+        console.log('error', error);
         return Responses._400({ message: 'message could not be received' });
     }
 };
