@@ -1,0 +1,15 @@
+type Mutation {
+    updateUser(
+        userId: ID!
+        name: String!
+        phoneNumber: String!
+        type: UserType!
+        registerDate: Date!
+    ): UpdateUserResponse
+}
+
+type UpdateUserResponse implements Response {
+    success: Boolean!
+    message: String!
+    code: Int!
+}

@@ -51,7 +51,9 @@ const resolvers = {
                         .publish(params)
                         .promise();
                     const result = await publishTextPromise;
-                    console.log(`Message ${params.Message} sent to the topic ${params.TopicArn} MessageID is ' ${result.MessageId}`);
+                    console.log(
+                        `Message ${params.Message} sent to the topic ${params.TopicArn} MessageID is ' ${result.MessageId}`
+                    );
                 } catch (error) {
                     console.error('err', error);
                     return { success: false, message: 'sns send failed', code: 500 };

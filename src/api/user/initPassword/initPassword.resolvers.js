@@ -4,7 +4,7 @@ const _ = require('lodash');
 
 const resolvers = {
     Mutation: {
-        InitPassword: async (parent, { userId, password }, { user }) => {
+        initPassword: async (parent, { userId, password }, { user }) => {
             const { data: userData } = await get({
                 partitionKey: userId || user.userId,
                 sortKey: '#user',
