@@ -41,13 +41,31 @@ const resolvers = {
                         },
                     };
                 });
+                const detailByUserInfo = [];
+
+                await Promise.all(
+                    userId.map(async (user) => {
+                        let { data: userInfo } = await get({
+                            partitionKey: user,
+                            sortKey: `#applyRoute#${month}`,
+                            tableName: process.env.TABLE_NAME,
+                        });
+                        detailByUserInfo.push({
+                            primaryKey: {
+                                partitionKey: userInfo.detailPartitionKey,
+                                sortKey: `#${month}#${userInfo.partitionKey}`,
+                            },
+                        });
+                    })
+                );
+
                 const bus = {
                     partitionKey: busId,
                     sortKey: `#${month}`,
                 };
 
                 ({ success, message, code } = await transaction({
-                    Delete: userList,
+                    Delete: [...userList, ...detailByUserInfo],
                     Update: [
                         {
                             primaryKey: bus,

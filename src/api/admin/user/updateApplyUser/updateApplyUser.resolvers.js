@@ -1,4 +1,4 @@
-const { update } = require('../../../../services');
+const { get, transaction } = require('../../../../services');
 
 const resolvers = {
     Mutation: {
@@ -6,8 +6,21 @@ const resolvers = {
             if (!user || user.type !== 'ADMIN') {
                 return { success: false, message: 'access denied', code: 403 };
             }
+            let { success, message, code, data } = {};
+            const FULFILLED = 'fulfilled';
+            const Delete = [];
+            const Put = [];
             try {
-                const { success, message, code } = await update({
+                ({ success, message, code, data } = await get({
+                    partitionKey: userId,
+                    sortKey: `#applyRoute#${month}`,
+                    tableName: process.env.TABLE_NAME,
+                }));
+            } catch (error) {
+                return { success: false, message: error.message, code: 500 };
+            }
+            const Update = [
+                {
                     primaryKey: {
                         partitionKey: userId,
                         sortKey: `#applyRoute#${month}`,
@@ -17,12 +30,39 @@ const resolvers = {
                         isCancellation: isCancellation,
                     },
                     method: 'SET',
-                    tableName: process.env.TABLE_NAME,
+                },
+            ];
+            const preApplyInfo = data;
+
+            if (preApplyInfo.state === FULFILLED && state !== FULFILLED) {
+                Delete.push({
+                    primaryKey: {
+                        partitionKey: preApplyInfo.detailPartitionKey,
+                        sortKey: `#${month}#${userId}`,
+                    },
                 });
-                return { success, message, code };
+            } else if (preApplyInfo.state !== FULFILLED && state === FULFILLED) {
+                Put.push({
+                    partitionKey: preApplyInfo.detailPartitionKey,
+                    sortKey: `#${month}#${userId}`,
+                    gsiSortKey: preApplyInfo.gsiSortKey,
+                    phoneNumber: preApplyInfo.phoneNumber,
+                    name: preApplyInfo.userName,
+                    userId: userId,
+                });
+            }
+            try {
+                ({ success, message, code } = await transaction({
+                    Update,
+                    Delete,
+                    Put,
+                    tableName: process.env.TABLE_NAME,
+                }));
             } catch (error) {
                 return { success: false, message: error.message, code: 500 };
             }
+
+            return { success, message, code };
         },
     },
 };
