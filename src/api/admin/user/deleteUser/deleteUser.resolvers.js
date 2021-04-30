@@ -8,6 +8,9 @@ const resolvers = {
             }
             let Update = [];
             let Delete = [];
+            if (args.userId.find((id) => id === user.userId)) {
+                return { success: false, message: '본인의 계정은 지우지 못합니다.', code: 400 };
+            }
             try {
                 let list = [];
                 for (let item of args.userId) {

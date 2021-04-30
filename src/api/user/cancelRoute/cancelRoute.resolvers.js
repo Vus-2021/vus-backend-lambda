@@ -62,11 +62,6 @@ const resolvers = {
                                 method: 'SET',
                                 updateItem: { isCancellation: true },
                             },
-                            {
-                                primaryKey: bus,
-                                method: 'ADD',
-                                updateItem: { registerCount: -1 },
-                            },
                         ],
                         Delete: [userInfoByDetailLocation],
                         tableName: process.env.TABLE_NAME,

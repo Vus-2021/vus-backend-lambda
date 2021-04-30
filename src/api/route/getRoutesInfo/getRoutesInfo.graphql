@@ -29,5 +29,6 @@ type driverInfo {
 
 type monthInfo {
     registerCount: Int
+    boardingCount: Int
     month: String
 }

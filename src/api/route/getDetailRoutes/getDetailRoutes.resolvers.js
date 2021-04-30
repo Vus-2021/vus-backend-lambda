@@ -16,16 +16,17 @@ const resolvers = {
                     currentLocation: [currentLocation, 'eq'],
                 };
 
-                const { success, message, code, data } = await query({
+                const { success, message, code, data: details } = await query({
                     params,
                     filterExpression,
                     tableName: process.env.TABLE_NAME,
                 });
 
-                data.forEach((item) => {
+                details.forEach((item) => {
                     item.boardingTime = item.gsiSortKey.split('#')[2];
+                    let detailPartitionKey = item.partitionKey;
                     passengerMap.set(
-                        item.partitionKey,
+                        detailPartitionKey,
                         query({
                             params: {
                                 partitionKey: [item.partitionKey, 'eq'],
@@ -43,7 +44,7 @@ const resolvers = {
                             return [key, passengerValues[index].data];
                         })
                     );
-                    data.forEach((item) => {
+                    details.forEach((item) => {
                         item.passengers = passengerMap.get(item.partitionKey).map((item) => {
                             return {
                                 phoneNumber: item.phoneNumber,
@@ -57,7 +58,7 @@ const resolvers = {
                     });
                 }
 
-                return { success, message, code, data };
+                return { success, message, code, data: details };
             } catch (error) {
                 return { success: false, message: error.message, code: 500 };
             }

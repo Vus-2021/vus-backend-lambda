@@ -12,25 +12,14 @@ const resolvers = {
             };
 
             try {
-                let success, message, code, result, data;
-                if (!route) {
-                    ({ success, message, code, data: result } = await query({
-                        params: {
-                            sortKey: ['#info', 'eq'],
-                            index: ['sk-index', 'using'],
-                        },
-                        tableName: process.env.TABLE_NAME,
-                    }));
-                } else {
-                    ({ success, message, code, data: result } = await query({
-                        params: {
-                            sortKey: ['#info', 'eq'],
-                            gsiSortKey: [route, 'eq'],
-                            index: ['sk-index', 'using'],
-                        },
-                        tableName: process.env.TABLE_NAME,
-                    }));
-                }
+                let { success, message, code, data: result } = await query({
+                    params: {
+                        sortKey: ['#info', 'eq'],
+                        gsiSortKey: [route, 'eq'],
+                        index: ['sk-index', 'using'],
+                    },
+                    tableName: process.env.TABLE_NAME,
+                });
 
                 result.forEach((item) => {
                     item.route = item.gsiSortKey;
@@ -60,10 +49,30 @@ const resolvers = {
                     };
                 });
 
-                data = [...busMap.values()];
+                const routeInfo = [...busMap.values()];
 
-                return { success, message, code, data };
+                await Promise.all(
+                    routeInfo.map(async (item) => {
+                        let boardingCount = await query({
+                            params: {
+                                sortKey: [`#applyRoute#${month}`, 'eq'],
+                                gsiSortKey: [item.gsiSortKey, 'eq'],
+                                index: ['sk-index', 'using'],
+                            },
+                            filterExpression: {
+                                state: ['fulfilled', 'eq'],
+                                isCancellation: [false, 'eq'],
+                            },
+                            tableName: process.env.TABLE_NAME,
+                        });
+                        Object.assign(item.month, { boardingCount: boardingCount.data.length });
+                        return item;
+                    })
+                );
+
+                return { success, message, code, data: routeInfo };
             } catch (error) {
+                console.log(error);
                 return { success: false, message: error.message, code: 500 };
             }
         },

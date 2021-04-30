@@ -10,14 +10,23 @@ const resolvers = {
                 return { success: false, message: 'access denied', code: 403 };
             }
 
-            let updateItem = Object.assign({
-                gsiSortKey: `#boardingTime#${boardingTime}`,
-                lat,
-                long,
-                location,
-                route,
-                imageUrl,
-            });
+            let updateItem =
+                imageUrl === null
+                    ? {
+                          gsiSortKey: `#boardingTime#${boardingTime}`,
+                          lat,
+                          long,
+                          location,
+                          route,
+                      }
+                    : {
+                          gsiSortKey: `#boardingTime#${boardingTime}`,
+                          lat,
+                          long,
+                          location,
+                          route,
+                          imageUrl,
+                      };
 
             try {
                 const { success, message, code } = await update({
