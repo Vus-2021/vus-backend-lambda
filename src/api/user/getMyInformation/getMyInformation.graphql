@@ -17,7 +17,7 @@ type routeState {
     busId: String
     month: String
     state: String
-    isCancellation: String
+    isCancellation: Boolean
     location: String
     boardingTime: String
 }

@@ -8,20 +8,18 @@ const resolvers = {
                 partitionKey: [context.user.userId, 'eq'],
             };
             try {
-                let { data } = await query({ params, tableName: process.env.TABLE_NAME });
+                let { data: userInfo } = await query({ params, tableName: process.env.TABLE_NAME });
                 let info;
                 if (context.user.type === 'DRIVER') {
-                    info = data
-                        .filter((item) => {
-                            return item.sortKey === '#driver';
-                        })
+                    info = userInfo
+                        .filter((item) => item.sortKey === '#driver')
                         .map((item) => {
                             return Object.assign(item, {
                                 route: item.gsiSortKey,
                             });
                         });
                 } else {
-                    info = data
+                    info = userInfo
                         .filter((item) => {
                             return (
                                 (item.state === 'pending' || item.state === 'fulfilled') &&
@@ -39,11 +37,11 @@ const resolvers = {
                             };
                         });
                 }
-                const obj = Object.assign(
+                const result = Object.assign(
                     context.user,
                     { routeInfo: info },
                     {
-                        routeStates: data
+                        routeStates: userInfo
                             .filter((item) => item.sortKey !== '#user')
                             .map((item) => {
                                 return {
@@ -59,9 +57,9 @@ const resolvers = {
                             }),
                     }
                 );
-                if (obj.type !== 'DRIVER') {
-                    for (let index in obj.routeStates) {
-                        let state = obj.routeStates[index];
+                if (result.type !== 'DRIVER') {
+                    for (let index in result.routeStates) {
+                        let state = result.routeStates[index];
                         let details = (
                             await get({
                                 partitionKey: state.detailPartitionKey,
@@ -70,7 +68,7 @@ const resolvers = {
                             })
                         ).data;
                         if (details) {
-                            obj.routeStates[index] = Object.assign(obj.routeStates[index], {
+                            result.routeStates[index] = Object.assign(result.routeStates[index], {
                                 location: details.location,
                                 boardingTime: details.gsiSortKey.split('#')[2],
                             });
@@ -81,7 +79,7 @@ const resolvers = {
                     success: true,
                     message: 'success get my information',
                     code: 200,
-                    data: obj,
+                    data: result,
                 };
             } catch (error) {
                 return { success: false, message: error.message, code: 500 };
