@@ -1,0 +1,9 @@
+type Mutation {
+    addAllMonthlyRoute(month: String!): addMonthlyRouteResponse
+}
+
+type addMonthlyRouteResponse implements Response {
+    success: Boolean!
+    message: String!
+    code: Int
+}
